@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Admin Panel | Pro Forex Journal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0e27;
+            color: #ffffff;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card { background: #0f1235; border: 1px solid #1e2268; border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+        h1 { color: #00d4aa; margin-bottom: 20px; }
+        h2 { font-size: 1.2rem; margin-bottom: 15px; color: #00d4aa; }
+        input, select { width: 100%; padding: 12px; background: #1a1e4a; border: 1px solid #2a2e6a; border-radius: 12px; color: white; margin-bottom: 15px; }
+        button { background: #00d4aa; color: #0a0e27; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 700; cursor: pointer; }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px; }
+        .stat { background: #1a1e4a; padding: 15px; border-radius: 12px; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: 800; color: #00d4aa; }
+        .back-link { color: #00d4aa; text-decoration: none; display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="index.html" class="back-link">← Back to Home</a>
+    <h1>🔐 Admin Panel</h1>
+    <p style="margin-bottom: 20px; color: #a0a4c0;">This page is private. Keep the URL safe.</p>
+
+    <div class="card">
+        <h2>📊 System Stats</h2>
+        <div class="stats-grid">
+            <div class="stat"><div class="stat-number" id="totalUsers">0</div><div>Active Users</div></div>
+            <div class="stat"><div class="stat-number" id="totalTrades">0</div><div>Total Trades Logged</div></div>
+        </div>
+        <p style="font-size: 0.8rem; color: #a0a4c0;">*Data from localStorage (browser only)</p>
+    </div>
+
+    <div class="card">
+        <h2>🔑 Unlock Code Management</h2>
+        <p style="margin-bottom: 15px;">Current unlock code: <strong id="currentCode">UNLOCK2025</strong></p>
+        <input type="text" id="newCode" placeholder="Enter new unlock code">
+        <button onclick="changeUnlockCode()">Change Unlock Code</button>
+        <p style="margin-top: 15px; font-size: 0.8rem; color: #a0a4c0;">Give this code to customers after payment.</p>
+    </div>
+
+    <div class="card">
+        <h2>💰 Payment Info</h2>
+        <p><strong>Account Number:</strong> 8112401459</p>
+        <p><strong>Bank:</strong> Opay</p>
+        <p><strong>Name:</strong> Segun Martin Michael</p>
+        <p><strong>Price:</strong> ₦5,000 one-time</p>
+        <button onclick="copyPaymentInfo()">Copy Payment Info</button>
+    </div>
+
+    <div class="card">
+        <h2>📋 Quick Actions</h2>
+        <button onclick="window.location.href='journal.html'">Open Trading Journal</button>
+        <button onclick="window.location.href='resources.html'" style="margin-left: 10px;">Prop Firm Comparison</button>
+    </div>
+</div>
+
+<script>
+    function changeUnlockCode() {
+        const newCode = document.getElementById('newCode').value.trim();
+        if (!newCode) { alert('Enter a new code'); return; }
+        localStorage.setItem('adminUnlockCode', newCode);
+        document.getElementById('currentCode').innerText = newCode;
+        alert(`Unlock code changed to: ${newCode}`);
+    }
+
+    function copyPaymentInfo() {
+        const info = "Opay: 8112401459\nName: Segun Martin Michael\nAmount: ₦5,000";
+        navigator.clipboard.writeText(info);
+        alert('Payment info copied!');
+    }
+
+    // Load current code
+    const savedCode = localStorage.getItem('adminUnlockCode');
+    if (savedCode) document.getElementById('currentCode').innerText = savedCode;
+
+    // Simulate stats (from localStorage)
+    try {
+        const trades = JSON.parse(localStorage.getItem('proForexJournal')) || [];
+        document.getElementById('totalTrades').innerText = trades.length;
+        document.getElementById('totalUsers').innerText = localStorage.getItem('proForexUnlimited') === 'true' ? '1' : '0';
+    } catch(e) {}
+</script>
+</body>
+</html>
